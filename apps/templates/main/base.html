@@ -95,7 +95,7 @@
 })();
 </script>
 
-<!-- ===== INSTALL BANNER ===== -->
+<!-- ===== INSTALL BANNER (Android / Chrome) ===== -->
 <div id="installBanner" class="install-banner" role="dialog" aria-label="Installer Gidana" hidden>
     <div class="install-banner-content">
         <img src="{{ url_for('static', filename='favicons/android-chrome-192x192.png') }}"
@@ -108,6 +108,33 @@
         <button id="dismissInstallBtn" class="install-banner-dismiss" type="button" aria-label="Fermer">
             <i class="bi bi-x-lg"></i>
         </button>
+    </div>
+</div>
+
+<!-- ===== iOS INSTALL BANNER ===== -->
+<div id="iosBanner" class="install-banner ios-banner" role="dialog" aria-label="Installer Gidana" hidden>
+    <div class="ios-banner-inner">
+        <div class="ios-banner-top">
+            <img src="{{ url_for('static', filename='favicons/android-chrome-192x192.png') }}"
+                 alt="Gidana" class="install-banner-icon">
+            <div class="install-banner-text">
+                <strong>Installer Gidana</strong>
+                <span>Ajoutez l'app à votre écran d'accueil</span>
+            </div>
+            <button id="dismissIosBanner" class="install-banner-dismiss" type="button" aria-label="Fermer">
+                <i class="bi bi-x-lg"></i>
+            </button>
+        </div>
+        <div class="ios-steps">
+            <div class="ios-step">
+                <span class="ios-step-num">1</span>
+                <p>Appuyez sur <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#007aff" viewBox="0 0 16 16" style="vertical-align:-2px"><path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5"/><path d="M7.646.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 1.707V10.5a.5.5 0 0 1-1 0V1.707L5.354 3.854a.5.5 0 1 1-.708-.708z"/></svg> <strong>Partager</strong> dans Safari</p>
+            </div>
+            <div class="ios-step">
+                <span class="ios-step-num">2</span>
+                <p>Puis <strong>« Sur l'écran d'accueil »</strong> <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="#555" viewBox="0 0 16 16" style="vertical-align:-2px"><path d="M0 1.5A1.5 1.5 0 0 1 1.5 0h13A1.5 1.5 0 0 1 16 1.5v13a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 0 14.5zM1.5 1a.5.5 0 0 0-.5.5v13a.5.5 0 0 0 .5.5h13a.5.5 0 0 0 .5-.5v-13a.5.5 0 0 0-.5-.5zM8 4.5a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3V5a.5.5 0 0 1 .5-.5"/></svg></p>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -278,24 +305,22 @@ if ('serviceWorker' in navigator) {
     });
 }
 
-// ── PWA Install Prompt ───────────────────────────────────────────
+// ── PWA Install Prompt (Android / Chrome) ───────────────────────
 (function () {
     let deferredPrompt = null;
-    const banner      = document.getElementById('installBanner');
-    const installBtn  = document.getElementById('installBtn');
-    const dismissBtn  = document.getElementById('dismissInstallBtn');
+    const banner     = document.getElementById('installBanner');
+    const installBtn = document.getElementById('installBtn');
+    const dismissBtn = document.getElementById('dismissInstallBtn');
 
-    function shouldShowBanner() {
-        const ts = localStorage.getItem('installBannerDismissed');
-        if (!ts) return true;
-        // Re-show after 7 days
-        return Date.now() - parseInt(ts, 10) > 7 * 24 * 60 * 60 * 1000;
+    function shouldShow(key) {
+        const ts = localStorage.getItem(key);
+        return !ts || Date.now() - parseInt(ts, 10) > 7 * 24 * 60 * 60 * 1000;
     }
 
     window.addEventListener('beforeinstallprompt', e => {
         e.preventDefault();
         deferredPrompt = e;
-        if (shouldShowBanner()) {
+        if (shouldShow('installBannerDismissed')) {
             setTimeout(() => {
                 banner.hidden = false;
                 requestAnimationFrame(() => banner.classList.add('show'));
@@ -318,9 +343,36 @@ if ('serviceWorker' in navigator) {
         setTimeout(() => { banner.hidden = true; }, 350);
     });
 
-    window.addEventListener('appinstalled', () => {
-        banner.hidden = true;
-        deferredPrompt = null;
+    window.addEventListener('appinstalled', () => { banner.hidden = true; deferredPrompt = null; });
+})();
+
+// ── iOS Install Instructions ─────────────────────────────────────
+(function () {
+    const isIos        = /iphone|ipad|ipod/i.test(navigator.userAgent);
+    const isStandalone = ('standalone' in navigator) && navigator.standalone;
+    const isSafari     = /safari/i.test(navigator.userAgent) && !/chrome|crios|fxios/i.test(navigator.userAgent);
+    if (!isIos || isStandalone || !isSafari) return;
+
+    const banner     = document.getElementById('iosBanner');
+    const dismissBtn = document.getElementById('dismissIosBanner');
+    if (!banner) return;
+
+    function shouldShow() {
+        const ts = localStorage.getItem('iosBannerDismissed');
+        return !ts || Date.now() - parseInt(ts, 10) > 7 * 24 * 60 * 60 * 1000;
+    }
+
+    if (shouldShow()) {
+        setTimeout(() => {
+            banner.hidden = false;
+            requestAnimationFrame(() => banner.classList.add('show'));
+        }, 2500);
+    }
+
+    dismissBtn?.addEventListener('click', () => {
+        banner.classList.remove('show');
+        localStorage.setItem('iosBannerDismissed', String(Date.now()));
+        setTimeout(() => { banner.hidden = true; }, 350);
     });
 })();
 </script>
