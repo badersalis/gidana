@@ -1,4 +1,4 @@
-const CACHE_VERSION = 'v5.0';
+const CACHE_VERSION = 'v6.0';
 const STATIC_CACHE = `gidana-static-${CACHE_VERSION}`;
 const RUNTIME_CACHE = `gidana-runtime-${CACHE_VERSION}`;
 const ALL_CACHES = [STATIC_CACHE, RUNTIME_CACHE];

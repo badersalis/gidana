@@ -460,6 +460,55 @@ input, select, textarea {
     color: #495057;
 }
 
+/* ===== iOS INSTALL BANNER ========================================= */
+.ios-banner-inner {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.ios-banner-top {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.ios-steps {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 10px 12px;
+    background: #f8f9fa;
+    border-radius: 12px;
+}
+
+.ios-step {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.ios-step-num {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #0d5c03;
+    color: #fff;
+    font-size: 0.6875rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.ios-step p {
+    font-size: 0.8125rem;
+    color: #333;
+    margin: 0;
+    line-height: 1.4;
+}
+
 /* ===== LINK & BUTTON ACTIVE STATES ==================================== */
 a:active {
     opacity: 0.7;
