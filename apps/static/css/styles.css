@@ -1,45 +1,103 @@
-.selected-tab {
-    color: #0d5c03;
-    text-shadow: 
-        0 0 5px rgba(18, 109, 4, 0.4),
-        0 0 10px rgba(18, 109, 4, 0.2),
-        0 2px 3px rgba(0, 0, 0, 0.2);
-    
-    position: relative;
-    transition: all 0.3s ease;
+/* ── Logo ────────────────────────────────────────────────────────── */
+.logo-badge {
+    width: 32px;
+    height: 32px;
+    border-radius: 9px;
+    background: linear-gradient(135deg, #1a7a06 0%, #0d5c03 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    box-shadow: 0 2px 8px rgba(13, 92, 3, 0.28);
 }
 
+.logo-badge i {
+    color: #fff;
+    font-size: 0.9375rem;
+}
+
+.logo-text {
+    font-weight: 700;
+    font-size: 1.1875rem;
+    color: #111;
+    letter-spacing: -0.3px;
+}
+
+/* ── Nav links ───────────────────────────────────────────────────── */
 .header-link {
     text-decoration: none;
-    color: #212529;
+    color: #555;
     font-weight: 500;
-    padding: 0.25rem 0.5rem;
-    transition: color 0.2s ease-in-out;
+    font-size: 0.9rem;
+    padding: 0.375rem 0.875rem;
+    border-radius: 50px;
+    transition: color 0.18s, background 0.18s;
 }
 
 .header-link:hover {
     color: #0d5c03;
-    text-decoration: none;
+    background: rgba(13, 92, 3, 0.07);
 }
 
-.selected-tab::after {
-    content: '';
-    position: absolute;
-    bottom: -4px;
-    left: 0;
-    width: 100%;
-    height: 2px;
-    background: linear-gradient(90deg, rgba(18, 109, 4, 0.8), #0d5c03);
-    box-shadow: 0 2px 8px rgba(18, 109, 4, 0.5);
-    border-radius: 2px;
+.selected-tab {
+    color: #0d5c03;
+    background: rgba(13, 92, 3, 0.1);
+    font-weight: 600;
 }
 
 .selected-tab:hover {
-    text-shadow: 
-        0 0 8px rgba(18, 109, 4, 0.6),
-        0 0 15px rgba(18, 109, 4, 0.3),
-        0 3px 5px rgba(0, 0, 0, 0.25);
+    background: rgba(13, 92, 3, 0.14);
 }
+
+/* ── Header icon button (mobile search) ──────────────────────────── */
+.header-icon-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    color: #444;
+    text-decoration: none;
+    background: #f3f4f6;
+    transition: background 0.18s, color 0.18s;
+}
+
+.header-icon-btn:hover {
+    background: #e8e8e8;
+    color: #111;
+}
+
+.header-icon-btn i { font-size: 0.9375rem; }
+
+/* ── Login button ────────────────────────────────────────────────── */
+.btn-login {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.375rem 1rem;
+    border-radius: 50px;
+    border: 1.5px solid #0d5c03;
+    color: #0d5c03;
+    font-size: 0.875rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: background 0.18s, color 0.18s;
+}
+
+.btn-login:hover {
+    background: #0d5c03;
+    color: #fff;
+}
+
+/* ── Avatar ──────────────────────────────────────────────────────── */
+.avatar-link { display: block; }
+.avatar-img  {
+    border-radius: 50%;
+    border: 2px solid #e8e8e8;
+    object-fit: cover;
+    transition: border-color 0.18s;
+}
+.avatar-link:hover .avatar-img { border-color: #0d5c03; }
 
 #loadingSpinner .modal-content {
     background: transparent;
@@ -61,33 +119,19 @@
 }
 
 .app-header {
-    background-color: white;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    padding: 0.75rem 1rem;
+    background: rgba(255, 255, 255, 0.92);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+    box-shadow: 0 1px 10px rgba(0, 0, 0, 0.06);
+    padding: 0.65rem 1.25rem;
     position: sticky;
     top: 0;
     z-index: 1020;
 }
-        
-.logo {
-    height: 32px;
-    width: auto;
-}
-        
-.profile-icon {
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    background-color: #f0f0f0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.2s ease;
-}
-        
-.profile-icon:hover {
-    background-color: #e0e0e0;
-    transform: scale(1.05);
+
+@media (min-width: 768px) {
+    .app-header { padding: 0.75rem 2rem; }
 }
 
 .property-card {
@@ -154,8 +198,289 @@
     transform: scale(0.98);
 }
 
-@media (max-width: 767.98px) {
-    .header-links {
-        display: none !important;
+
+/* ===== EMPTY STATE ===================================================== */
+.empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: clamp(300px, 58vh, 520px);
+    text-align: center;
+    padding: 3rem 1.5rem;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.empty-state i {
+    font-size: 3.5rem;
+    color: #ced4da;
+    margin-bottom: 1.25rem;
+    display: block;
+}
+
+.empty-state h5 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #495057;
+    margin-bottom: 0.5rem;
+}
+
+.empty-state p {
+    font-size: 0.9375rem;
+    color: #adb5bd;
+    max-width: 280px;
+    margin: 0 auto 1.25rem;
+}
+
+/* ===== NATIVE PWA FEEL ================================================= */
+
+/* ===== DESKTOP PROPORTIONS ============================================ */
+
+/* Cap content width on very large screens */
+@media (min-width: 1400px) {
+    .container, .container-fluid {
+        max-width: 1240px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    .app-header .container-fluid {
+        max-width: 1240px;
+        margin: 0 auto;
     }
 }
+
+/* More generous section spacing on desktop */
+@media (min-width: 992px) {
+    .content { padding-top: 2rem !important; padding-bottom: 2rem !important; }
+    .property-card img { height: 220px; }
+}
+
+/* Section headings scale up nicely */
+@media (min-width: 992px) {
+    .recommendations > .d-flex h5,
+    .categories > h5 {
+        font-size: 1.25rem;
+        font-weight: 700;
+    }
+}
+
+/* Kill the blue tap flash on every tappable element */
+*, *::before, *::after {
+    -webkit-tap-highlight-color: transparent;
+}
+
+/* Smooth momentum scroll + contain overscroll (prevents pull-to-refresh jank) */
+html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+}
+
+body {
+    overscroll-behavior-y: contain;
+    -webkit-overflow-scrolling: touch;
+}
+
+/* Prevent iOS auto-zoom on form focus (inputs < 16px trigger it) */
+input, select, textarea {
+    font-size: max(16px, 1rem);
+}
+
+/* Page enter animation */
+@media (prefers-reduced-motion: no-preference) {
+    .content {
+        animation: pageIn 0.18s ease-out both;
+    }
+}
+
+@keyframes pageIn {
+    from { opacity: 0; transform: translateY(5px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ===== BOTTOM NAV ====================================================== */
+.bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 1030;
+    background: #fff;
+    box-shadow: 0 -1px 0 rgba(0,0,0,0.08), 0 -4px 12px rgba(0,0,0,0.06);
+    display: flex;
+    justify-content: space-around;
+    padding: 6px 0 calc(6px + env(safe-area-inset-bottom));
+    padding: 6px 0 calc(6px + constant(safe-area-inset-bottom));
+}
+
+.bottom-nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+    flex: 1;
+    text-decoration: none;
+    color: #6c757d;
+    font-size: 0.6875rem;
+    font-weight: 500;
+    padding: 4px 8px;
+    border-radius: 12px;
+    transition: color 0.15s, transform 0.1s;
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+.bottom-nav-item i {
+    font-size: 1.375rem;
+    transition: transform 0.15s cubic-bezier(0.34, 1.56, 0.64, 1);
+    display: block;
+}
+
+.bottom-nav-item.active {
+    color: #0d5c03;
+}
+
+.bottom-nav-item:active i {
+    transform: scale(0.82);
+}
+
+/* Push page content above bottom nav on mobile */
+@media (max-width: 767.98px) {
+    .container.d-flex {
+        padding-bottom: calc(68px + env(safe-area-inset-bottom));
+        padding-bottom: calc(68px + constant(safe-area-inset-bottom));
+    }
+}
+
+/* ===== INSTALL BANNER ================================================== */
+.install-banner {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 2000;
+    background: #fff;
+    border-radius: 20px 20px 0 0;
+    box-shadow: 0 -2px 24px rgba(0,0,0,0.13);
+    padding: 14px 16px calc(14px + env(safe-area-inset-bottom));
+    padding: 14px 16px calc(14px + constant(safe-area-inset-bottom));
+    transform: translateY(100%);
+    transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+    will-change: transform;
+}
+
+.install-banner.show {
+    transform: translateY(0);
+}
+
+/* On desktop, display as a bottom-right toast */
+@media (min-width: 768px) {
+    .install-banner {
+        left: auto;
+        right: 24px;
+        bottom: 24px;
+        width: 340px;
+        border-radius: 16px;
+        padding: 16px;
+    }
+}
+
+.install-banner-content {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.install-banner-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    flex-shrink: 0;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+}
+
+.install-banner-text {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+
+.install-banner-text strong {
+    font-size: 0.9375rem;
+    color: #212529;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.install-banner-text span {
+    font-size: 0.8125rem;
+    color: #6c757d;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.btn-install {
+    background: #0d5c03;
+    color: #fff;
+    border: none;
+    border-radius: 20px;
+    padding: 8px 18px;
+    font-size: 0.875rem;
+    font-weight: 600;
+    white-space: nowrap;
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: background 0.15s, transform 0.1s;
+}
+
+.btn-install:hover  { background: #0a4a02; }
+.btn-install:active { transform: scale(0.94); background: #083a01; }
+
+.install-banner-dismiss {
+    background: none;
+    border: none;
+    color: #adb5bd;
+    padding: 6px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    border-radius: 50%;
+    transition: background 0.15s, color 0.15s;
+    line-height: 1;
+}
+
+.install-banner-dismiss:hover {
+    background: #f0f0f0;
+    color: #495057;
+}
+
+/* ===== LINK & BUTTON ACTIVE STATES ==================================== */
+a:active {
+    opacity: 0.7;
+    transition: opacity 0.05s;
+}
+
+.btn:active, button:active {
+    transform: scale(0.97);
+    transition: transform 0.08s;
+}
+
+/* Bigger tap targets for icon buttons without changing visuals */
+.favorite-btn,
+.add-property-btn {
+    position: relative;
+}
+
+.favorite-btn::before,
+.add-property-btn::before {
+    content: '';
+    position: absolute;
+    inset: -8px;
+}
+

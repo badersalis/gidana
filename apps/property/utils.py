@@ -1,4 +1,5 @@
 import os
+import uuid
 from flask import url_for, current_app
 from werkzeug.utils import secure_filename
 from firebase_admin import storage, initialize_app, credentials
@@ -44,13 +45,17 @@ def save_property_images(files, folder_name):
     else:
         return save_images_locally(files, folder_name)
 
+def _unique_filename(original):
+    ext = secure_filename(original).rsplit('.', 1)[-1].lower()
+    return f"{uuid.uuid4().hex}.{ext}"
+
 def save_images_to_firebase(files, folder):
     saved_urls = []
     bucket = storage.bucket()
 
     for file in files:
         if file:
-            filename = secure_filename(file.filename)
+            filename = _unique_filename(file.filename)
             blob = bucket.blob(f"{folder}/{filename}")
             blob.upload_from_file(file)
             blob.make_public()
@@ -59,16 +64,13 @@ def save_images_to_firebase(files, folder):
     return saved_urls
 
 def save_images_locally(files, folder_name):
-    """
-    Saves image files locally and returns list of public URLs for the frontend.
-    """
     saved_urls = []
     base_path = os.path.join(get_app_data_path(), folder_name)
     os.makedirs(base_path, exist_ok=True)
 
     for file in files:
         if file:
-            filename = secure_filename(file.filename)
+            filename = _unique_filename(file.filename)
             full_path = os.path.join(base_path, filename)
             file.save(full_path)
             file_url = url_for('local_files', folder=folder_name, filename=filename, _external=True)

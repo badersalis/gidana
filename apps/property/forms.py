@@ -21,17 +21,16 @@ class PropertyForm(FlaskForm):
         }
     )
     property_type = SelectField(_('Type de propriété'), choices=[
-        (_('Maison'), _('Maison')),
+        (_('Studio'), _('Studio')),
         (_('Appartement'), _('Appartement')),
-        (_('Villa'), _('Villa')),
-        (_('Terrain'), _('Terrain'))
+        (_('Maison'), _('Maison')),
     ], validators=[DataRequired()])
     transaction_type = SelectField(_('Transaction'), choices=[
         (_('À louer'), _('À louer')),
         (_('À vendre'), _('À vendre'))
     ], validators=[DataRequired()])
-    rooms = IntegerField(_('Nombre de chambres'), validators=[DataRequired(), NumberRange(min=1)])
-    bathrooms = IntegerField(_('Nombre de salles de bain'), validators=[DataRequired(), NumberRange(min=1)])
+    rooms = IntegerField(_('Chambres'), validators=[DataRequired(), NumberRange(min=1)])
+    bathrooms = IntegerField(_('SDB / Toilettes'), validators=[DataRequired(), NumberRange(min=1)])
     shower_type = SelectField(_('Type de douche'), choices=[
         (_('interne'), _('Interne')),
         (_('externe'), _('Externe'))

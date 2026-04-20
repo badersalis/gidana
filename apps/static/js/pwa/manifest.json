@@ -1,22 +1,54 @@
 {
+  "id": "/",
   "name": "Gidana",
   "short_name": "Gidana",
-  "description":"Easily find a house or land for rent or sale anywhere in the world.",
+  "description": "Trouvez facilement une maison ou un terrain à louer ou à vendre partout dans le monde.",
+  "lang": "fr",
+  "dir": "ltr",
+  "orientation": "portrait-primary",
+  "categories": ["lifestyle"],
   "icons": [
     {
-      "src": "./icons/icon-192.png",
+      "src": "/static/favicons/android-chrome-192x192.png",
       "sizes": "192x192",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any"
     },
     {
-      "src": "./icons/icon-512.png",
+      "src": "/static/favicons/android-chrome-512x512.png",
       "sizes": "512x512",
       "type": "image/png",
-      "purpose": "any maskable"
+      "purpose": "maskable"
+    },
+    {
+      "src": "/static/favicons/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ],
+  "screenshots": [],
+  "shortcuts": [
+    {
+      "name": "Explorer",
+      "short_name": "Explorer",
+      "url": "/explore",
+      "description": "Explorer les propriétés disponibles",
+      "icons": [{ "src": "/static/favicons/android-chrome-192x192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Favoris",
+      "short_name": "Favoris",
+      "url": "/favoris",
+      "description": "Mes propriétés favorites",
+      "icons": [{ "src": "/static/favicons/android-chrome-192x192.png", "sizes": "192x192" }]
     }
   ],
   "start_url": "/?source=pwa",
+  "scope": "/",
   "display": "standalone",
-  "theme_color": "#ffffff",
-  "background_color": "#ffffff"
+  "display_override": ["standalone", "minimal-ui"],
+  "theme_color": "#0d5c03",
+  "background_color": "#ffffff",
+  "prefer_related_applications": false
 }
