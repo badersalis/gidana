@@ -1,10 +1,14 @@
-const CACHE_VERSION = 'v7.0';
+const CACHE_VERSION = 'v8.0';
 const STATIC_CACHE = `gidana-static-${CACHE_VERSION}`;
 const RUNTIME_CACHE = `gidana-runtime-${CACHE_VERSION}`;
 const ALL_CACHES = [STATIC_CACHE, RUNTIME_CACHE];
 
+// PWA start URL — pre-cached so the splash screen renders instantly on first launch
+const START_URL = '/?source=pwa';
+
 // App shell — precached on install
 const PRECACHE_URLS = [
+    START_URL,
     '/offline',
     '/static/css/bootstrap.min.css',
     '/static/css/styles.css',
@@ -59,8 +63,28 @@ self.addEventListener('fetch', event => {
     // Let API calls go straight to network
     if (url.pathname.startsWith('/api/')) return;
 
-    // Navigation (HTML pages) — network-first, cache fallback, then /offline
     if (request.mode === 'navigate') {
+        const isStartUrl = url.pathname === '/' && url.search.includes('source=pwa');
+
+        if (isStartUrl) {
+            // Cache-first with background revalidation: serve cached HTML instantly
+            // so the splash screen renders without waiting for the network.
+            // The background fetch keeps the cache fresh for the next launch.
+            event.respondWith(
+                caches.open(STATIC_CACHE).then(cache =>
+                    cache.match(request).then(cached => {
+                        const networkFetch = fetch(request).then(response => {
+                            if (response.ok) cache.put(request, response.clone());
+                            return response;
+                        }).catch(() => null);
+                        return cached || networkFetch;
+                    })
+                )
+            );
+            return;
+        }
+
+        // All other HTML pages — network-first, cache fallback, then /offline
         event.respondWith(
             fetch(request)
                 .then(response => {
