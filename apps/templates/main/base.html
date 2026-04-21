@@ -207,16 +207,10 @@
     </nav>
 </div>
 
-<!-- Loading modal -->
-<div class="modal fade" id="loadingSpinner" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content bg-transparent border-0">
-            <div class="d-flex justify-content-center">
-                <div class="spinner-border text-success" style="width: 3rem; height: 3rem;" role="status">
-                    <span class="visually-hidden">Loading...</span>
-                </div>
-            </div>
-        </div>
+<!-- Loading overlay -->
+<div id="loadingSpinner" aria-hidden="true">
+    <div class="spinner-border text-success" role="status">
+        <span class="visually-hidden">Loading...</span>
     </div>
 </div>
 
@@ -266,25 +260,21 @@ document.addEventListener('DOMContentLoaded', function () {
 
 // ── Page-transition spinner ──────────────────────────────────────
 document.addEventListener('DOMContentLoaded', function () {
+    const spinnerEl = document.getElementById('loadingSpinner');
+
     function showSpinner() {
-        const modal = new bootstrap.Modal(document.getElementById('loadingSpinner'));
-        modal.show();
+        if (spinnerEl) spinnerEl.classList.add('active');
     }
 
     document.querySelectorAll('a').forEach(link => {
         link.addEventListener('click', function () {
-            if (!this.href.includes(window.location.host) || this.hasAttribute('data-no-spinner')) return;
+            if (!this.href || !this.href.includes(window.location.host) || this.hasAttribute('data-no-spinner')) return;
             showSpinner();
         });
     });
 
     document.querySelectorAll('form').forEach(form => {
         form.addEventListener('submit', showSpinner);
-    });
-
-    window.addEventListener('load', function () {
-        const spinner = bootstrap.Modal.getInstance(document.getElementById('loadingSpinner'));
-        if (spinner) spinner.hide();
     });
 });
 
@@ -323,7 +313,8 @@ if ('serviceWorker' in navigator) {
         if (shouldShow('installBannerDismissed')) {
             setTimeout(() => {
                 banner.hidden = false;
-                requestAnimationFrame(() => banner.classList.add('show'));
+                void banner.offsetHeight; // force reflow so CSS transition fires
+                banner.classList.add('show');
             }, 2500);
         }
     });
@@ -365,8 +356,9 @@ if ('serviceWorker' in navigator) {
     if (shouldShow()) {
         setTimeout(() => {
             banner.hidden = false;
-            requestAnimationFrame(() => banner.classList.add('show'));
-        }, 2500);
+            void banner.offsetHeight; // force reflow so CSS transition fires on iOS Safari
+            banner.classList.add('show');
+        }, 2000);
     }
 
     dismissBtn?.addEventListener('click', () => {

@@ -1,4 +1,4 @@
-const CACHE_VERSION = 'v6.0';
+const CACHE_VERSION = 'v7.0';
 const STATIC_CACHE = `gidana-static-${CACHE_VERSION}`;
 const RUNTIME_CACHE = `gidana-runtime-${CACHE_VERSION}`;
 const ALL_CACHES = [STATIC_CACHE, RUNTIME_CACHE];
@@ -17,6 +17,13 @@ const PRECACHE_URLS = [
     '/static/feedbacks/account_circle.svg',
     '/static/favicons/android-chrome-192x192.png',
     '/static/favicons/apple-touch-icon.png',
+    // Fonts — required for standalone PWA to render correctly offline
+    '/static/fonts/Poppins/Poppins-Regular.ttf',
+    '/static/fonts/Poppins/Poppins-Medium.ttf',
+    '/static/fonts/Poppins/Poppins-SemiBold.ttf',
+    '/static/fonts/Poppins/Poppins-Bold.ttf',
+    '/static/fonts/Poppins/Poppins-Light.ttf',
+    '/static/icons/font/fonts/bootstrap-icons.woff2',
 ];
 
 self.addEventListener('install', event => {
